@@ -21,6 +21,12 @@ export default function Home() {
     totalAmount:number | undefined,
   }
 
+  const handleNumericalData=(data:any)=>{
+
+    let regex = /^[a-zA-Z]+$/
+    return(regex.test(data))
+  }
+
   const handleContent =(contentName:string)=>{
     if(contentName === studentData.event.find(event=>event === contentName)){
       setUserData(prevState => ({
@@ -107,11 +113,11 @@ console.log(studentData);
         <label htmlFor="course" className="text-white text-xl semi-bold"> Course </label>
         <input required value={studentData.course} onChange={(e)=>handleChange('course',e.target.value)} type="text" name="course" id="course" className="rounded-md px-3 py-2 backdrop-blur-3xl bg-transparent border-green-600 border-2 placeholder-slate-400 " placeholder="Course"/>
         <label htmlFor="year" className="text-white text-xl semi-bold"> Year </label>
-        <input required value={studentData.year} onChange={(e)=>{Number(e.target.value) <=4 ? handleChange('year',e.target.value) : toast.error("The Imputed Year is Invalid") }} type="number" name="year" id="year" className="rounded-md px-3 py-2 backdrop-blur-3xl bg-transparent border-green-600 border-2 placeholder-slate-400 " placeholder="Year"/>
+        <input required value={studentData.year === 0 ?  undefined :studentData.year } onChange={(e)=>{ (Number(e.target.value) >= 0  && Number(e.target.value) <= 4) ? handleChange('year',Number(e.target.value)) : toast.error("The Imputed Year is Invalid") }} type="test" name="year" id="year" className="rounded-md px-3 py-2 backdrop-blur-3xl bg-transparent border-green-600 border-2 placeholder-slate-400 " placeholder="Year"/>
         <label htmlFor="email" className="text-white text-xl semi-bold"> Email </label>
         <input required value={studentData.email} onChange={(e)=>handleChange('email',e.target.value)} type="email" name="email" id="email" className="rounded-md px-3 py-2 backdrop-blur-3xl bg-transparent border-green-600 border-2 placeholder-slate-400 " placeholder="Email"/>
         <label htmlFor="phone" className="text-white text-xl semi-bold"> Phone Number </label>
-        <input required value={studentData.phoneNumber} onChange={(e)=>handleChange('phoneNumber',e.target.value)} type="number" id="phone" name="phone" className="rounded-md px-3 py-2 backdrop-blur-3xl bg-transparent border-green-600 border-2 placeholder-slate-400" placeholder="Phone Number"/>
+        <input required value={studentData.phoneNumber === 0 ?  undefined :studentData.phoneNumber} onChange={(e)=>{Number(e.target.value) >= 0  ? handleChange('phoneNumber',Number(e.target.value)) : toast.error("The Imputed Year is Invalid")}} type="text" id="phone" name="phone" className="rounded-md px-3 py-2 backdrop-blur-3xl bg-transparent border-green-600 border-2 placeholder-slate-400" placeholder="Phone Number"/>
         <p className="text-white text-xl semi-bold">Events</p>
           <div className="text-white flex flex-col gap-3 my-4">
             <div className="flex justify-between">
@@ -201,8 +207,9 @@ console.log(studentData);
             </div>
           </div>
         <label htmlFor="amount" className="text-white text-xl semi-bold"> Amount </label>
-        <input required type="number" name="amount" id="amount"
-          onChange={(e)=>handleChange('totalAmount',parseInt(e.target.value))}
+        <input required type="text" name="amount" id="amount"
+          value={studentData.totalAmount  === 0 ?  undefined : studentData.totalAmount}
+          onChange={(e)=>{ Number(e.target.value) >= 0  ?  handleChange('totalAmount',Number(e.target.value)):toast.error("The Imputed Year is Invalid")}}
         className="rounded-md px-3 py-2 backdrop-blur-3xl bg-transparent border-green-600 border-2 placeholder-slate-400 " 
         placeholder="Total Amount Paid"/>
       <button className='bg-green-600 px-5 py-2 rounded-md focus:bg-green-700' onClick={handleSubmit}> Submit </button>
